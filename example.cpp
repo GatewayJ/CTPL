@@ -1,4 +1,5 @@
-#include <ctpl.h>
+#pragma GCC diagnostic error "-std=c++11"
+#include "ctpl.h"
 #include <iostream>
 #include <string>
 
@@ -39,10 +40,10 @@ int main(int argc, char **argv) {
     {
         struct Second {
             Second(const std::string & s) { std::cout << "Second ctor\n"; this->s = s; }
-            Second(Second && c) { std::cout << "Second move ctor\n"; s = std::move(c.s); }
-            Second(const Second & c) { std::cout << "Second copy ctor\n"; this->s = c.s; };
+            Second(Second && c) { std::cout << "Second move ctor\n"; s = std::move(c.s); }// 右值引用，使用std::move 当做初始化的参数
+            Second(const Second & c) { std::cout << "Second copy ctor\n"; this->s = c.s; }; // 引用传递 使用对象作为初始化参数
             ~Second() { std::cout << "Second dtor\n"; }
-            void operator()(int id) const {
+            void operator()(int id) const {  // 操作符重载，operator也可以用作类的转换函数（二义性的时候可以使用 explicit修饰 ）
                 std::cout << "hello from " << id << ' ' << this->s << '\n';
             }
         private:
